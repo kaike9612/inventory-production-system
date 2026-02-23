@@ -24,6 +24,6 @@ public class ProductRawMaterial {
     @JoinColumn(name = "raw_material_id", nullable = false)
     private RawMaterial rawMaterial;
 
-    @Column(name = "required_quantity", nullable = false)
-    private Integer requiredQuantity;
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
 }

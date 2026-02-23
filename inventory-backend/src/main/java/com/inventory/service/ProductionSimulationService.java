@@ -55,7 +55,7 @@ public class ProductionSimulationService {
             for (ProductRawMaterial required : requiredMaterials) {
                 String materialName = required.getRawMaterial().getName();
                 Integer availableStock = stockMap.get(materialName);
-                Integer requiredQty = required.getRequiredQuantity();
+                Integer requiredQty = required.getQuantity();
                 
                 if (availableStock == null || availableStock == 0) {
                     maxQuantity = 0;

@@ -20,7 +20,7 @@ public class ProductRawMaterialMapper {
                 .id(dto.getId())
                 .product(Product.builder().id(dto.getProductId()).build())
                 .rawMaterial(RawMaterial.builder().id(dto.getRawMaterialId()).build())
-                .requiredQuantity(dto.getRequiredQuantity())
+                .quantity(dto.getQuantity())
                 .build();
     }
 
@@ -34,7 +34,7 @@ public class ProductRawMaterialMapper {
                 .productName(entity.getProduct().getName())
                 .rawMaterialId(entity.getRawMaterial().getId())
                 .rawMaterialName(entity.getRawMaterial().getName())
-                .requiredQuantity(entity.getRequiredQuantity())
+                .quantity(entity.getQuantity())
                 .build();
     }
 

@@ -22,7 +22,7 @@ public class ProductRawMaterialDTO {
 
     private String rawMaterialName;
 
-    @NotNull(message = "Required quantity is required")
-    @Min(value = 1, message = "Required quantity must be at least 1")
-    private Integer requiredQuantity;
+    @NotNull(message = "Quantity is required")
+    @Min(value = 1, message = "Quantity must be at least 1")
+    private Integer quantity;
 }

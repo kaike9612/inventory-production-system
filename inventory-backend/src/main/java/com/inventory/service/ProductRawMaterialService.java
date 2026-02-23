@@ -35,7 +35,7 @@ public class ProductRawMaterialService {
         ProductRawMaterial productRawMaterial = ProductRawMaterial.builder()
                 .product(product)
                 .rawMaterial(rawMaterial)
-                .requiredQuantity(dto.getRequiredQuantity())
+                .quantity(dto.getQuantity())
                 .build();
 
         ProductRawMaterial saved = productRawMaterialRepository.save(productRawMaterial);

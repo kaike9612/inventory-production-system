@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS product_raw_materials (
     id BIGSERIAL PRIMARY KEY,
     product_id BIGINT NOT NULL,
     raw_material_id BIGINT NOT NULL,
-    required_quantity INTEGER NOT NULL,
+    quantity INTEGER NOT NULL,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
     FOREIGN KEY (raw_material_id) REFERENCES raw_materials(id) ON DELETE CASCADE
 );
@@ -58,61 +58,61 @@ ON CONFLICT DO NOTHING;
 -- Gadget X requires 20 Iron, 10 Copper, and 5 Glass
 -- Gadget Y requires 12 Iron, 8 Plastic, and 6 Aluminum
 
-INSERT INTO product_raw_materials (product_id, raw_material_id, required_quantity) 
+INSERT INTO product_raw_materials (product_id, raw_material_id, quantity) 
 SELECT p.id, r.id, 10
 FROM products p, raw_materials r
 WHERE p.name = 'Widget A' AND r.name = 'Iron'
 ON CONFLICT DO NOTHING;
 
-INSERT INTO product_raw_materials (product_id, raw_material_id, required_quantity) 
+INSERT INTO product_raw_materials (product_id, raw_material_id, quantity) 
 SELECT p.id, r.id, 5
 FROM products p, raw_materials r
 WHERE p.name = 'Widget A' AND r.name = 'Plastic'
 ON CONFLICT DO NOTHING;
 
-INSERT INTO product_raw_materials (product_id, raw_material_id, required_quantity) 
+INSERT INTO product_raw_materials (product_id, raw_material_id, quantity) 
 SELECT p.id, r.id, 15
 FROM products p, raw_materials r
 WHERE p.name = 'Widget B' AND r.name = 'Iron'
 ON CONFLICT DO NOTHING;
 
-INSERT INTO product_raw_materials (product_id, raw_material_id, required_quantity) 
+INSERT INTO product_raw_materials (product_id, raw_material_id, quantity) 
 SELECT p.id, r.id, 10
 FROM products p, raw_materials r
 WHERE p.name = 'Widget B' AND r.name = 'Plastic'
 ON CONFLICT DO NOTHING;
 
-INSERT INTO product_raw_materials (product_id, raw_material_id, required_quantity) 
+INSERT INTO product_raw_materials (product_id, raw_material_id, quantity) 
 SELECT p.id, r.id, 20
 FROM products p, raw_materials r
 WHERE p.name = 'Gadget X' AND r.name = 'Iron'
 ON CONFLICT DO NOTHING;
 
-INSERT INTO product_raw_materials (product_id, raw_material_id, required_quantity) 
+INSERT INTO product_raw_materials (product_id, raw_material_id, quantity) 
 SELECT p.id, r.id, 10
 FROM products p, raw_materials r
 WHERE p.name = 'Gadget X' AND r.name = 'Copper'
 ON CONFLICT DO NOTHING;
 
-INSERT INTO product_raw_materials (product_id, raw_material_id, required_quantity) 
+INSERT INTO product_raw_materials (product_id, raw_material_id, quantity) 
 SELECT p.id, r.id, 5
 FROM products p, raw_materials r
 WHERE p.name = 'Gadget X' AND r.name = 'Glass'
 ON CONFLICT DO NOTHING;
 
-INSERT INTO product_raw_materials (product_id, raw_material_id, required_quantity) 
+INSERT INTO product_raw_materials (product_id, raw_material_id, quantity) 
 SELECT p.id, r.id, 12
 FROM products p, raw_materials r
 WHERE p.name = 'Gadget Y' AND r.name = 'Iron'
 ON CONFLICT DO NOTHING;
 
-INSERT INTO product_raw_materials (product_id, raw_material_id, required_quantity) 
+INSERT INTO product_raw_materials (product_id, raw_material_id, quantity) 
 SELECT p.id, r.id, 8
 FROM products p, raw_materials r
 WHERE p.name = 'Gadget Y' AND r.name = 'Plastic'
 ON CONFLICT DO NOTHING;
 
-INSERT INTO product_raw_materials (product_id, raw_material_id, required_quantity) 
+INSERT INTO product_raw_materials (product_id, raw_material_id, quantity) 
 SELECT p.id, r.id, 6
 FROM products p, raw_materials r
 WHERE p.name = 'Gadget Y' AND r.name = 'Aluminum'
