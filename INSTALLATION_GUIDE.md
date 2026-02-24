@@ -115,6 +115,8 @@ Maven 3.9.x
 
 ## 3️⃣ Iniciar o Backend
 
+### Usando Maven Wrapper (Recomendado):
+
 ```
 powershell
 # Navegar para o diretório do projeto
@@ -124,6 +126,14 @@ cd C:\Users\Kaike\Desktop\Projetos\inventory-production-system
 cd inventory-backend
 
 # Compilar e iniciar (primeira vez pode levar alguns minutos)
+.\mvnw.cmd spring-boot:run
+```
+
+### Ou se tiver Maven instalado:
+
+```
+powershell
+cd inventory-backend
 mvn spring-boot:run
 ```
 
