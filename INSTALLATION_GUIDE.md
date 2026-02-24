@@ -68,6 +68,24 @@ winget install EclipseAdoptium.Temurin.17.JDK
 winget install Apache.Maven
 ```
 
+### Opção D: Usar Maven Wrapper (Recomendado - sem instalar Maven!)
+
+O projeto já inclui o Maven Wrapper. Execute:
+
+```
+powershell
+cd C:\Users\Kaike\Desktop\Projetos\inventory-production-system
+
+# Entrar no diretório do backend
+cd inventory-backend
+
+# Baixar o Maven Wrapper JAR (primeira vez)
+.\setup-maven-wrapper.ps1
+
+# Executar o backend
+.\mvnw.cmd spring-boot:run
+```
+
 ---
 
 ## 2️⃣ Verificar Instalação
