@@ -1,0 +1,20 @@
+{
+  "name": "inventory-production-system",
+  "version": "1.0.0",
+  "description": "Complete full-stack inventory production system",
+  "private": true,
+"scripts": {
+    "install:all": "npm install && cd inventory-frontend && npm install",
+    "dev:frontend": "cd inventory-frontend && npm start",
+    "dev:backend": "cd inventory-backend && mvn spring-boot:run",
+    "build:frontend": "cd inventory-frontend && npm run build",
+    "build:backend": "cd inventory-backend && mvn clean package",
+    "start": "cd inventory-frontend && npm start",
+    "dev": "cd inventory-frontend && npm start",
+    "test:frontend": "cd inventory-frontend && npm test",
+    "test:e2e": "cd inventory-frontend && npm run cypress:run"
+  },
+  "keywords": ["inventory", "production", "spring-boot", "react"],
+  "author": "",
+  "license": "MIT"
+}
