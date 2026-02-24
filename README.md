@@ -343,12 +343,6 @@ npm install
 
 ---
 
-## 📄 Licença
-
-MIT License - sinta-se livre para usar e modificar!
-
----
-
 ## 👤 Autor
 
-Desenvolvido por Kaike
+Desenvolvido por Kaike Souza
