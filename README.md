@@ -22,7 +22,7 @@ inventory-production-system/
 ├── inventory-backend/          # Backend Spring Boot
 │   ├── src/main/java/com/inventory/
 │   │   ├── config/            # Configuracoes (CORS, Web, DataInitializer)
-│   │   ├── controller/       # Controladores REST
+│   │   ├── controller/        # Controladores REST
 │   │   ├── service/          # Logica de negocio
 │   │   ├── repository/       # Acesso a dados
 │   │   ├── entity/           # Entidades JPA
@@ -30,9 +30,9 @@ inventory-production-system/
 │   │   ├── mapper/           # Mapeadores Entidade <-> DTO
 │   │   └── exception/        # Tratamento de excecoes
 │   └── src/main/resources/
-│       ├── application.yml    # Configuracoes
-│       ├── schema.sql         # Schema do banco
-│       └── data.sql           # Dados de teste
+│       ├── application.yml   # Configuracoes
+│       ├── schema.sql        # Schema do banco
+│       └── data.sql          # Dados de teste
 └── inventory-frontend/       # Frontend React
     ├── src/
     │   ├── components/       # Componentes reutilizaveis
@@ -69,7 +69,7 @@ Interface de usuario em React:
 ### Backend
 
 - JDK 17
-- Maven Wrapper (ja incluido no projeto)
+- Maven Wrapper (ja includo no projeto)
 - PostgreSQL (para producao) - Opcional para desenvolvimento
 
 ### Frontend
@@ -146,7 +146,8 @@ spring:
 
 ### Backend
 
-```powershell
+```
+powershell
 cd inventory-backend
 .\mvnw.cmd spring-boot:run
 ```
@@ -365,6 +366,6 @@ git push origin main
 
 ---
 
-## 👤 Autor
+## Autor
 
 Desenvolvido por Kaike Souza
