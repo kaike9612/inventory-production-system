@@ -7,10 +7,11 @@ Sistema completo de gestao de producao e inventario. Permite gerenciar materias-
 ### Stack
 
 - Java 17
-- Spring Boot
-- PostgreSQL
+- Spring Boot 3.2
+- PostgreSQL (producao) / H2 (desenvolvimento)
 - React + Vite
 - TypeScript
+- Tailwind CSS
 
 ---
 
@@ -18,20 +19,39 @@ Sistema completo de gestao de producao e inventario. Permite gerenciar materias-
 
 ```
 inventory-production-system/
-├── inventory-backend/
-└── inventory-frontend/
+├── inventory-backend/          # Backend Spring Boot
+│   ├── src/main/java/com/inventory/
+│   │   ├── config/            # Configuracoes (CORS, Web, DataInitializer)
+│   │   ├── controller/       # Controladores REST
+│   │   ├── service/          # Logica de negocio
+│   │   ├── repository/       # Acesso a dados
+│   │   ├── entity/           # Entidades JPA
+│   │   ├── dto/              # Data Transfer Objects
+│   │   ├── mapper/           # Mapeadores Entidade <-> DTO
+│   │   └── exception/        # Tratamento de excecoes
+│   └── src/main/resources/
+│       ├── application.yml    # Configuracoes
+│       ├── schema.sql         # Schema do banco
+│       └── data.sql           # Dados de teste
+└── inventory-frontend/       # Frontend React
+    ├── src/
+    │   ├── components/       # Componentes reutilizaveis
+    │   ├── pages/            # Telas da aplicacao
+    │   ├── services/         # Comunicacao com API
+    │   └── types/            # Tipos TypeScript
+    └── package.json
 ```
 
 ### Backend (inventory-backend/)
 
 O backend e responsavel por toda a logica de negocio e persistencia de dados:
 
-- **Controller**: Recebe requis e direcionicoes HTTPa para os servicos
+- **Controller**: Recebe requisicoes HTTP e direciona para os servicos
 - **Service**: Contem a logica de negocio
 - **Repository**: Acessa o banco de dados
 - **Entity**: Representa as tabelas do banco de dados
 - **DTO**: Objetos para transferencia de dados entre camadas
-- **Config**: Configuracoes de CORS e outros recursos
+- **Config**: Configuracoes de CORS, Web e inicializacao de dados
 
 ### Frontend (inventory-frontend/)
 
@@ -50,7 +70,7 @@ Interface de usuario em React:
 
 - JDK 17
 - Maven Wrapper (ja incluido no projeto)
-- PostgreSQL
+- PostgreSQL (para producao) - Opcional para desenvolvimento
 
 ### Frontend
 
@@ -92,18 +112,21 @@ where.exe java
 
 ## Configuracao do Banco
 
-### Criar Banco de Dados
+### Desenvolvimento (H2 - em memoria)
 
-Acesse o PostgreSQL e execute:
+O projeto ja vem configurado para usar H2 em desenvolvimento. Nenhuma configuracao adicional e necessaria.
+
+### Producao (PostgreSQL)
+
+1. Instale o PostgreSQL
+2. Crie o banco de dados:
 
 ```
 sql
 CREATE DATABASE inventory_db;
 ```
 
-### Configuracao no application.yml
-
-O arquivo `inventory-backend/src/main/resources/application.yml` contem a configuracao do banco:
+3. Configure as credenciais em `inventory-backend/src/main/resources/application.yml`:
 
 ```
 yaml
@@ -123,8 +146,7 @@ spring:
 
 ### Backend
 
-```
-powershell
+```powershell
 cd inventory-backend
 .\mvnw.cmd spring-boot:run
 ```
@@ -154,6 +176,29 @@ O frontend estara disponivel em: **http://localhost:3000**
 
 ---
 
+## Funcionalidades
+
+### Dashboard
+- Visualizacao de estatisticas gerais
+- Total de produtos cadastrados
+- Total de materias-primas
+- Produto mais caro
+
+### Gerenciamento de Produtos
+- Criar, editar e excluir produtos
+- Definir nome e preco
+
+### Gerenciamento de Materias-Primas
+- Criar, editar e excluir materias-primas
+- Controle de estoque
+
+### Simulacao de Producao
+- Calculo automatico de capacidade de producao
+- Verificacao de disponibilidade de materias-primas
+- Valor total producible
+
+---
+
 ## Endpoints Principais
 
 ### Produtos
@@ -176,6 +221,14 @@ O frontend estara disponivel em: **http://localhost:3000**
 | PUT | /api/raw-materials/{id} | Atualizar materia-prima |
 | DELETE | /api/raw-materials/{id} | Excluir materia-prima |
 
+### Associacoes (Produto <-> Materia-Prima)
+
+| Metodo | Endpoint | Descricao |
+|--------|----------|-----------|
+| GET | /api/product-raw-materials | Listar associacoes |
+| POST | /api/product-raw-materials | Criar associacao |
+| DELETE | /api/product-raw-materials/{id} | Excluir associacao |
+
 ### Simulacao de Producao
 
 | Metodo | Endpoint | Descricao |
@@ -186,7 +239,7 @@ O frontend estara disponivel em: **http://localhost:3000**
 
 ## Dados de Exemplo
 
-O sistema possui um `DataInitializer` que cria dados automaticamente se o banco estiver vazio. Sao criados:
+O sistema possui um `DataInitializer` que cria dados automaticamente ao iniciar se o banco estiver vazio.
 
 ### Materias-Primas
 
@@ -195,6 +248,7 @@ O sistema possui um `DataInitializer` que cria dados automaticamente se o banco 
 - Copper (80 unidades)
 - Aluminum (60 unidades)
 - Glass (40 unidades)
+- E outras...
 
 ### Produtos
 
@@ -202,6 +256,26 @@ O sistema possui um `DataInitializer` que cria dados automaticamente se o banco 
 - Widget B (R$ 50,00)
 - Gadget X (R$ 100,00)
 - Gadget Y (R$ 75,00)
+- E outros...
+
+---
+
+## Implementacoes e Alteracoes Recentes
+
+### Backend
+- Configuracao H2 para desenvolvimento
+- DataInitializer para criacao automatica de dados
+- WebConfig para configuracoes de CORS
+- Tratamento centralizado de excecoes
+- Validacao com Bean Validation
+- Transactions explicitas com @Transactional
+- JOIN FETCH para evitar queries N+1
+
+### Frontend
+- Interface responsiva com Tailwind CSS
+- Notificacoes toast (Sonner)
+- Tratamento de erros em requisicoes
+- Componentes funcionais com Hooks
 
 ---
 
@@ -239,77 +313,8 @@ Verifique se o context-path esta configurado corretamente. O backend usa o prefi
 
 Se houver erros de CORS, verifique a configuracao em `WebConfig.java` ou `CorsConfig.java`.
 
----
+### "Porta 8080 ja em uso"
 
-## Comandos Git para Commitar as Alteracoes
-
-```
-powershell
-# Adicionar todas as alteracoes
-git add .
-
-# Commit com mensagem profissional
-git commit -m "docs: update README with setup instructions and environment configuration"
-
-# Push para main
-git push origin main
-```
-
-### Verificar Branch Atual
-
-```
-powershell
-git branch
-```
-
-Se estiver em outra branch e quiser enviar para main:
-
-```powershell
-git push origin nome-da-branch
-2. Visualize a capacidade de produção baseada no estoque
-
----
-
-## 📝 Commits Recentes
-
-| Commit | Descrição |
-|--------|-----------|
-| `a9f16bf` | Adiciona Maven Wrapper completo e atualiza guia |
-| `bffc0cb` | Atualiza guia com Maven Wrapper |
-| `0d2495e` | Adiciona Maven Wrapper para executar sem Maven instalado |
-| `8c0df66` | Adiciona guia de instalação para Java, Maven e PostgreSQL |
-| `e7a6cc9` | Corrige versão do TypeScript para compatibilidade |
-| `b4f8a2c` | Implementa simulação de produção |
-| `c3d9e1f` | Adiciona dashboard com estatísticas |
-
----
-
-## 🔧 Boas Práticas Implementadas
-
-### Backend
-- ✅ Transactions explícitas com `@Transactional`
-- ✅ Validação com Bean Validation (`@Valid`)
-- ✅ Tratamento centralizado de exceções
-- ✅ Lombok para reduzir boilerplate
-- ✅ Mapper pattern para DTOs
-- ✅ Logging com SLF4J
-- ✅ CORS configurado
-- ✅ JOIN FETCH para evitar N+1 queries
-- ✅ Verificações defensivas contra NullPointerException
-
-### Frontend
-- ✅ TypeScript para tipagem estática
-- ✅ Componentes funcionais com Hooks
-- ✅ Separação de responsabilidades (services, components, pages)
-- ✅ Tratamento de erros em requisições
-- ✅ Notificações toast (Sonner)
-- ✅ Design responsivo com Tailwind CSS
-
----
-
-## 🐛 Solução de Problemas
-
-### "Porta 8080 já em uso"
 ```
 powershell
 # Encontrar o processo
@@ -319,20 +324,43 @@ netstat -ano | findstr :8080
 kill -f PID
 ```
 
-### "Porta 3000 já em uso"
-O React perguntará se deseja usar outra porta. Responda 'Y'.
+---
 
-### "Banco de dados não conecta"
-1. Verifique se PostgreSQL está rodando
-2. Confirme as credenciais em `application.yml`
-3. Crie o banco `inventory_db`
+## Boas Praticas Implementadas
 
-### "Erro ao compilar frontend"
+### Backend
+- Transactions explicitas com @Transactional
+- Validacao com Bean Validation (@Valid)
+- Tratamento centralizado de excecoes
+- Lombok para reduzir boilerplate
+- Mapper pattern para DTOs
+- Logging com SLF4J
+- CORS configurado
+- JOIN FETCH para evitar N+1 queries
+- Verificacoes defensivas contra NullPointerException
+
+### Frontend
+- TypeScript para tipagem estatica
+- Componentes funcionais com Hooks
+- Separacao de responsabilidades (services, components, pages)
+- Tratamento de erros em requisicoes
+- Notificacoes toast (Sonner)
+- Design responsivo com Tailwind CSS
+
+---
+
+## Comandos Git
+
 ```
 powershell
-cd inventory-frontend
-rm -rf node_modules
-npm install
+# Adicionar todas as alteracoes
+git add .
+
+# Commit com mensagem profissional
+git commit -m "feat: description"
+
+# Push para main
+git push origin main
 ```
 
 ---
