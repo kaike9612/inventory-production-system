@@ -260,13 +260,13 @@ O sistema possui um `DataInitializer` que cria dados automaticamente ao iniciar 
 
 ---
 
-## Implementacoes e Alteracoes Recentes
+## Implementacoes e Alterações Recentes
 
 ### Backend
-- Configuracao H2 para desenvolvimento
+- Configuração H2 para desenvolvimento
 - DataInitializer para criacao automatica de dados
 - WebConfig para configuracoes de CORS
-- Tratamento centralizado de excecoes
+- Tratamento centralizado de exceções
 - Validacao com Bean Validation
 - Transactions explicitas com @Transactional
 - JOIN FETCH para evitar queries N+1
@@ -311,7 +311,7 @@ Verifique se o context-path esta configurado corretamente. O backend usa o prefi
 
 ### Erro: CORS
 
-Se houver erros de CORS, verifique a configuracao em `WebConfig.java` ou `CorsConfig.java`.
+Se houver erros de CORS, verifique a configuração em `WebConfig.java` ou `CorsConfig.java`.
 
 ### "Porta 8080 ja em uso"
 
@@ -337,13 +337,13 @@ kill -f PID
 - Logging com SLF4J
 - CORS configurado
 - JOIN FETCH para evitar N+1 queries
-- Verificacoes defensivas contra NullPointerException
+- Verificações defensivas contra NullPointerException
 
 ### Frontend
-- TypeScript para tipagem estatica
+- TypeScript para tipagem estática
 - Componentes funcionais com Hooks
 - Separacao de responsabilidades (services, components, pages)
-- Tratamento de erros em requisicoes
+- Tratamento de erros em requisições
 - Notificacoes toast (Sonner)
 - Design responsivo com Tailwind CSS
 
