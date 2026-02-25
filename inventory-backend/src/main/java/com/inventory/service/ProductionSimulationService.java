@@ -19,6 +19,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductionSimulationService {
 
     private final ProductRepository productRepository;

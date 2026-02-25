@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { getProducts, getRawMaterials } from '../services/api';
-import { getProductionSimulation } from '../services/api';
+import { getProducts, getRawMaterials, getProductionSimulation, checkBackendHealth } from '../services/api';
 import { Product } from '../types';
 import { RawMaterial } from '../types';
 import { ProductionSimulation } from '../types';
-import { Package, Boxes, DollarSign, TrendingUp, Loader2 } from 'lucide-react';
+import { Package, Boxes, DollarSign, TrendingUp, Loader2, AlertTriangle, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
 
 const DashboardPage: React.FC = () => {
@@ -12,14 +11,32 @@ const DashboardPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [rawMaterials, setRawMaterials] = useState<RawMaterial[]>([]);
   const [simulation, setSimulation] = useState<ProductionSimulation[]>([]);
+  const [backendOnline, setBackendOnline] = useState<boolean | null>(null);
 
   useEffect(() => {
     loadData();
   }, []);
 
+  const checkHealth = async () => {
+    const isOnline = await checkBackendHealth();
+    setBackendOnline(isOnline);
+    if (!isOnline) {
+      toast.error('Backend indisponível. Inicie o servidor em http://localhost:8080');
+    }
+    return isOnline;
+  };
+
   const loadData = async () => {
     try {
       setLoading(true);
+      
+      // Check health first
+      const isOnline = await checkHealth();
+      if (!isOnline) {
+        setLoading(false);
+        return;
+      }
+      
       const [productsData, rawMaterialsData, simulationData] = await Promise.all([
         getProducts(),
         getRawMaterials(),
@@ -28,8 +45,22 @@ const DashboardPage: React.FC = () => {
       setProducts(productsData);
       setRawMaterials(rawMaterialsData);
       setSimulation(simulationData);
-    } catch (err) {
-      toast.error('Falha ao carregar dados do dashboard');
+      setBackendOnline(true);
+    } catch (err: any) {
+      console.error('Erro ao carregar dashboard:', err);
+      const url = err.config?.url || 'unknown';
+      const status = err.response?.status;
+      
+      if (err.code === 'ECONNREFUSED' || err.code === 'ERR_NETWORK') {
+        toast.error('Backend indisponível. Inicie o servidor em http://localhost:8080');
+        setBackendOnline(false);
+      } else if (status === 404) {
+        toast.error(`Rota não encontrada (404): ${url}`);
+      } else if (status === 500) {
+        toast.error('Erro interno (500). Verifique os logs do backend');
+      } else {
+        toast.error('Falha ao carregar dados do dashboard');
+      }
     } finally {
       setLoading(false);
     }
@@ -64,6 +95,32 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
+          <p className="text-sm text-gray-500 mt-1">Visão geral do sistema de produção</p>
+        </div>
+        <button
+          onClick={loadData}
+          className="flex items-center gap-2 px-4 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+        >
+          <RefreshCw className="w-4 h-4" />
+          Atualizar
+        </button>
+      </div>
+
+      {/* Backend Status */}
+      {backendOnline === false && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
+          <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0" />
+          <div>
+            <p className="text-sm font-medium text-red-800">Backend offline</p>
+            <p className="text-xs text-red-600">Inicie o servidor Spring Boot em http://localhost:8080</p>
+          </div>
+        </div>
+      )}
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Products */}

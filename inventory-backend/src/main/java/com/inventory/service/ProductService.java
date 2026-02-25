@@ -1,6 +1,7 @@
 package com.inventory.service;
 
 import com.inventory.dto.ProductDTO;
+import com.inventory.entity.Product;
 import com.inventory.exception.ResourceNotFoundException;
 import com.inventory.mapper.ProductMapper;
 import com.inventory.repository.ProductRepository;

@@ -1,277 +1,271 @@
-# 🏭 Sistema de Gestão de Produção e Inventário
+# Inventory Production System
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Java-17-blue.svg" alt="Java 17">
-  <img src="https://img.shields.io/badge/Spring Boot-3.2.0-green.svg" alt="Spring Boot">
-  <img src="https://img.shields.io/badge/React-18-blue.svg" alt="React">
-  <img src="https://img.shields.io/badge/TypeScript-5.x-blue.svg" alt="TypeScript">
-  <img src="https://img.shields.io/badge/PostgreSQL-gray.svg" alt="PostgreSQL">
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License">
-</p>
+## Descricao
 
-Sistema completo de gestão de produção e inventário, desenvolvido com Java Spring Boot (backend) e React/TypeScript (frontend). Permite gerenciar produtos, matérias-primas e simular capacidade de produção baseada no estoque disponível.
+Sistema completo de gestao de producao e inventario. Permite gerenciar materias-primas, produtos, simular producao e visualizar metricas no dashboard.
+
+### Stack
+
+- Java 17
+- Spring Boot
+- PostgreSQL
+- React + Vite
+- TypeScript
 
 ---
 
-## 📁 Estrutura do Projeto
+## Arquitetura do Projeto
 
 ```
 inventory-production-system/
-│
-├── 📂 inventory-backend/                 # Backend Spring Boot (Java 17)
-│   ├── src/main/java/com/inventory/
-│   │   ├── config/                      # Configurações (CORS)
-│   │   ├── controller/                  # Controladores REST
-│   │   │   ├── ProductController.java
-│   │   │   ├── RawMaterialController.java
-│   │   │   ├── ProductRawMaterialController.java
-│   │   │   └── ProductionSimulationController.java
-│   │   ├── service/                     # Camada de negócio
-│   │   │   ├── ProductService.java
-│   │   │   ├── RawMaterialService.java
-│   │   │   ├── ProductRawMaterialService.java
-│   │   │   └── ProductionSimulationService.java
-│   │   ├── repository/                  # Camada de acesso a dados
-│   │   ├── entity/                      # Entidades JPA
-│   │   │   ├── Product.java
-│   │   │   ├── RawMaterial.java
-│   │   │   └── ProductRawMaterial.java
-│   │   ├── dto/                         # Data Transfer Objects
-│   │   ├── mapper/                      # Mapeadores Entidade ↔ DTO
-│   │   └── exception/                   # Tratamento de exceções
-│   ├── src/main/resources/
-│   │   ├── application.yml              # Configurações do Spring
-│   │   ├── schema.sql                   # Schema do banco
-│   │   └── data.sql                     # Dados de teste
-│   ├── pom.xml                          # Dependências Maven
-│   └── mvnw.cmd                         # Maven Wrapper (Windows)
-│
-├── 📂 inventory-frontend/                # Frontend React + TypeScript
-│   ├── src/
-│   │   ├── components/                  # Componentes reutilizáveis
-│   │   │   ├── Header.tsx
-│   │   │   ├── Sidebar.tsx
-│   │   │   └── MainLayout.tsx
-│   │   ├── pages/                       # Páginas da aplicação
-│   │   │   ├── DashboardPage.tsx
-│   │   │   ├── ProductsPage.tsx
-│   │   │   ├── RawMaterialsPage.tsx
-│   │   │   └── ProductionSimulationPage.tsx
-│   │   ├── services/                    # Serviços de API
-│   │   │   └── api.ts
-│   │   ├── types/                       # Interfaces TypeScript
-│   │   ├── App.tsx
-│   │   └── index.tsx
-│   ├── cypress/                         # Testes E2E
-│   ├── package.json
-│   └── tsconfig.json
-│
-├── 📄 README.md                         # Este arquivo
-└── 📄 INSTALLATION_GUIDE.md            # Guia de instalação detalhado
+├── inventory-backend/
+└── inventory-frontend/
+```
+
+### Backend (inventory-backend/)
+
+O backend e responsavel por toda a logica de negocio e persistencia de dados:
+
+- **Controller**: Recebe requis e direcionicoes HTTPa para os servicos
+- **Service**: Contem a logica de negocio
+- **Repository**: Acessa o banco de dados
+- **Entity**: Representa as tabelas do banco de dados
+- **DTO**: Objetos para transferencia de dados entre camadas
+- **Config**: Configuracoes de CORS e outros recursos
+
+### Frontend (inventory-frontend/)
+
+Interface de usuario em React:
+
+- **Pages**: Telas da aplicacao (Dashboard, Produtos, Materias-Primas, Simulacao)
+- **Components**: Componentes reutilizaveis (Header, Sidebar, Layout)
+- **Services**: Comunicacao com a API REST
+- **Types**: Definicoes de tipos TypeScript
+
+---
+
+## Pre-requisitos
+
+### Backend
+
+- JDK 17
+- Maven Wrapper (ja incluido no projeto)
+- PostgreSQL
+
+### Frontend
+
+- Node.js 18+
+
+---
+
+## Configuracao do Ambiente (Windows)
+
+### Instalar Java 17
+
+1. Acesse: https://adoptium.net/temurin/releases/?version=17
+2. Baixe o instalador JDK 17 (x64)
+3. Execute e instale normalmente
+
+### Configurar JAVA_HOME e PATH
+
+Abra o PowerShell como Administrador e execute:
+
+```
+powershell
+# Definir JAVA_HOME permanentemente
+[System.Environment]::SetEnvironmentVariable("JAVA_HOME", "C:\Program Files\Eclipse Adoptium\jdk-17.0.x_x64", "Machine")
+
+# Adicionar ao PATH
+$path = [System.Environment]::GetEnvironmentVariable("PATH", "Machine")
+[System.Environment]::SetEnvironmentVariable("PATH", "$path;C:\Program Files\Eclipse Adoptium\jdk-17.0.x_x64\bin", "Machine")
+```
+
+### Verificar Instalacao
+
+```
+powershell
+java -version
+where.exe java
 ```
 
 ---
 
-## 🛠️ Tecnologias
+## Configuracao do Banco
 
-### Backend
-| Tecnologia | Versão | Descrição |
-|------------|--------|-----------|
-| Java | 17 | Linguagem principal |
-| Spring Boot | 3.2.0 | Framework backend |
-| Spring Data JPA | - | ORM |
-| Hibernate | - | Implementação JPA |
-| PostgreSQL | - | Banco de dados relacional |
-| Lombok | - | Redução de boilerplate |
+### Criar Banco de Dados
 
-### Frontend
-| Tecnologia | Versão | Descrição |
-|------------|--------|-----------|
-| React | 18 | Biblioteca de UI |
-| TypeScript | 5.x | Tipagem estática |
-| Axios | 1.6 | Cliente HTTP |
-| React Router | 6 | Roteamento |
-| Tailwind CSS | 3.4 | Estilização |
-| Cypress | 15 | Testes E2E |
-| Sonner | 2.x | Notificações toast |
+Acesse o PostgreSQL e execute:
 
----
-
-## 🚀 Pré-requisitos
-
-Antes de começar, certifique-se de ter instalado:
-
-- **Java JDK 17** - [Download](https://adoptium.net/temurin/releases/?version=17)
-- **Node.js 18+** - [Download](https://nodejs.org/)
-- **PostgreSQL 14+** - [Download](https://www.postgresql.org/download/)
-- **Git** - [Download](https://git-scm.com/)
-
-### Configuração do Banco de Dados
-
-1. Instale o PostgreSQL
-2. Crie o banco de dados:
 ```
 sql
 CREATE DATABASE inventory_db;
 ```
 
-3. Configure as credenciais em `inventory-backend/src/main/resources/application.yml`:
+### Configuracao no application.yml
+
+O arquivo `inventory-backend/src/main/resources/application.yml` contem a configuracao do banco:
+
 ```
 yaml
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/inventory_db
-    username: postgres    # Seu usuário
-    password: postgres    # Sua senha
+    username: postgres
+    password: sua_senha
+  jpa:
+    hibernate:
+      ddl-auto: update
 ```
 
 ---
 
-## ▶️ Como Executar
+## Como Rodar o Projeto
 
-### Opção 1: Usando Maven Wrapper (Recomendado - sem instalar Maven)
+### Backend
 
 ```
 powershell
-# 1. Clone o repositório
-git clone https://github.com/kaike9612/inventory-production-system.git
-cd inventory-production-system
-
-# 2. Iniciar o Backend
 cd inventory-backend
-.\setup-maven-wrapper.ps1    # Primeira vez apenas
 .\mvnw.cmd spring-boot:run
-
-# 3. Em outro terminal, iniciar o Frontend
-cd inventory-frontend
-npm install
-npm start
 ```
 
-### Opção 2: Com Maven instalado
+O backend iniciara em: **http://localhost:8080**
+
+A API estara disponivel em: **http://localhost:8080/api**
+
+### Frontend
+
+Crie o arquivo `.env.local` na pasta `inventory-frontend/`:
+
+```
+VITE_API_BASE_URL=http://localhost:8080
+```
+
+Execute:
 
 ```
 powershell
-# Backend
+cd inventory-frontend
+npm install
+npm run dev
+```
+
+O frontend estara disponivel em: **http://localhost:3000**
+
+---
+
+## Endpoints Principais
+
+### Produtos
+
+| Metodo | Endpoint | Descricao |
+|--------|----------|-----------|
+| GET | /api/products | Listar todos os produtos |
+| POST | /api/products | Criar novo produto |
+| GET | /api/products/{id} | Buscar produto por ID |
+| PUT | /api/products/{id} | Atualizar produto |
+| DELETE | /api/products/{id} | Excluir produto |
+
+### Materias-Primas
+
+| Metodo | Endpoint | Descricao |
+|--------|----------|-----------|
+| GET | /api/raw-materials | Listar todas as materias-primas |
+| POST | /api/raw-materials | Criar nova materia-prima |
+| GET | /api/raw-materials/{id} | Buscar materia-prima por ID |
+| PUT | /api/raw-materials/{id} | Atualizar materia-prima |
+| DELETE | /api/raw-materials/{id} | Excluir materia-prima |
+
+### Simulacao de Producao
+
+| Metodo | Endpoint | Descricao |
+|--------|----------|-----------|
+| GET | /api/production/simulation | Calcular capacidade de producao |
+
+---
+
+## Dados de Exemplo
+
+O sistema possui um `DataInitializer` que cria dados automaticamente se o banco estiver vazio. Sao criados:
+
+### Materias-Primas
+
+- Iron (100 unidades)
+- Plastic (50 unidades)
+- Copper (80 unidades)
+- Aluminum (60 unidades)
+- Glass (40 unidades)
+
+### Produtos
+
+- Widget A (R$ 25,00)
+- Widget B (R$ 50,00)
+- Gadget X (R$ 100,00)
+- Gadget Y (R$ 75,00)
+
+---
+
+## Troubleshooting
+
+### Erro: "java nao reconhecido"
+
+Execute no PowerShell:
+
+```
+powershell
+# Verificar onde o Java esta instalado
+where.exe java
+
+# Se nao encontrar, configure o JAVA_HOME
+$env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-17.0.x_x64"
+$env:PATH = "$env:PATH;$env:JAVA_HOME\bin"
+```
+
+### Erro: "connection refused"
+
+O backend nao foi iniciado. Execute:
+
+```
+powershell
 cd inventory-backend
-mvn spring-boot:run
-
-# Frontend (outro terminal)
-cd inventory-frontend
-npm install
-npm start
+.\mvnw.cmd spring-boot:run
 ```
 
----
+### Erro: 404 em /api/*
 
-## 🌐 Portas e URLs
+Verifique se o context-path esta configurado corretamente. O backend usa o prefixo `/api`.
 
-| Serviço | URL | Descrição |
-|---------|-----|-----------|
-| Backend | http://localhost:8080/api | API REST |
-| Frontend | http://localhost:3000 | Interface web |
-| PostgreSQL | localhost:5432 | Banco de dados |
+### Erro: CORS
+
+Se houver erros de CORS, verifique a configuracao em `WebConfig.java` ou `CorsConfig.java`.
 
 ---
 
-## 📡 Endpoints da API
+## Comandos Git para Commitar as Alteracoes
 
-### Produtos
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/api/products` | Listar todos os produtos |
-| GET | `/api/products/{id}` | Buscar produto por ID |
-| POST | `/api/products` | Criar novo produto |
-| PUT | `/api/products/{id}` | Atualizar produto |
-| DELETE | `/api/products/{id}` | Excluir produto |
-
-### Matérias-Primas
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/api/raw-materials` | Listar todas as matérias-primas |
-| GET | `/api/raw-materials/{id}` | Buscar matéria-prima por ID |
-| POST | `/api/raw-materials` | Criar nova matéria-prima |
-| PUT | `/api/raw-materials/{id}` | Atualizar matéria-prima |
-| DELETE | `/api/raw-materials/{id}` | Excluir matéria-prima |
-
-### Associações (Produto ↔ Matéria-Prima)
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/api/product-raw-materials` | Listar todas as associações |
-| POST | `/api/product-raw-materials` | Criar associação |
-| DELETE | `/api/product-raw-materials/{id}` | Excluir associação |
-
-### Simulação de Produção
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/api/production/simulation` | Calcular capacidade de produção |
-
----
-
-## 📊 Dados de Teste
-
-O sistema é populado automaticamente com dados de teste ao iniciar:
-
-### Matérias-Primas (Indústria de Bebidas)
-| Nome | Estoque |
-|------|---------|
-| Concentrado de Cola | 500 |
-| Açúcar | 800 |
-| Água | 5000 |
-| Garrafa PET 500ml | 2000 |
-| Garrafa Vidro 600ml | 1500 |
-| Lata Alumínio 350ml | 3000 |
-| Concentrado de Laranja | 400 |
-| Malte | 600 |
-| Lúpulo | 200 |
-
-### Produtos
-| Nome | Preço |
-|------|-------|
-| Refrigerante Cola 350ml | R$ 5,50 |
-| Suco de Laranja 1L | R$ 7,90 |
-| Água Mineral 500ml | R$ 3,00 |
-| Cerveja Pilsen 600ml | R$ 9,50 |
-
-### Associações (Exemplo)
-- **Refrigerante Cola**: Concentrado de Cola (5) + Açúcar (3) + Água (30) + Lata (1)
-- **Suco de Laranja**: Concentrado de Laranja (40) + Água (60) + Garrafa PET (1)
-- **Cerveja Pilsen**: Água (50) + Malte (10) + Lúpulo (2) + Garrafa Vidro (1)
-
----
-
-## 🧪 Como Testar
-
-### 1. Verificar se o Backend está rodando
 ```
 powershell
-curl http://localhost:8080/api/products
-curl http://localhost:8080/api/raw-materials
+# Adicionar todas as alteracoes
+git add .
+
+# Commit com mensagem profissional
+git commit -m "docs: update README with setup instructions and environment configuration"
+
+# Push para main
+git push origin main
 ```
 
-### 2. Acessar o Frontend
-Abra no navegador: **http://localhost:3000**
+### Verificar Branch Atual
 
-### 3. Testar Funcionalidades
+```
+powershell
+git branch
+```
 
-#### Dashboard
-- Acesse: http://localhost:3000
-- Visualize estatísticas: total de produtos, matérias-primas, produto mais caro
+Se estiver em outra branch e quiser enviar para main:
 
-#### Criar Produto
-1. Vá para Products
-2. Clique em "Novo Produto"
-3. Preencha: Nome = "Novo Produto", Preço = 100.00
-4. Clique em "Salvar"
-
-#### Criar Matéria-Prima
-1. Vá para Raw Materials
-2. Clique em "Nova Matéria-Prima"
-3. Preencha: Nome = "Nova Matéria", Estoque = 100
-4. Clique em "Salvar"
-
-#### Simular Produção
-1. Vá para Simulation
+```powershell
+git push origin nome-da-branch
 2. Visualize a capacidade de produção baseada no estoque
 
 ---

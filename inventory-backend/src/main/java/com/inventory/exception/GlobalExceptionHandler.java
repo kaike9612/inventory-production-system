@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
         });
         
         response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("message", "Validation failed");
+        response.put("message", "Falha na validacao dos dados");
         response.put("errors", errors);
         response.put("timestamp", java.time.LocalDateTime.now());
         
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .message(ex.getMessage())
+                .message("Erro interno no servidor. Por favor, tente novamente mais tarde.")
                 .timestamp(java.time.LocalDateTime.now())
                 .build();
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);

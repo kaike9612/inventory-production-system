@@ -1,6 +1,7 @@
 package com.inventory.service;
 
 import com.inventory.dto.RawMaterialDTO;
+import com.inventory.entity.RawMaterial;
 import com.inventory.exception.ResourceNotFoundException;
 import com.inventory.mapper.RawMaterialMapper;
 import com.inventory.repository.RawMaterialRepository;
