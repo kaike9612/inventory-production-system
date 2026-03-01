@@ -350,22 +350,6 @@ kill -f PID
 
 ---
 
-## Comandos Git
-
-```
-powershell
-# Adicionar todas as alteracoes
-git add .
-
-# Commit com mensagem profissional
-git commit -m "feat: description"
-
-# Push para main
-git push origin main
-```
-
----
-
 ## Autor
 
 Desenvolvido por Kaike Souza
