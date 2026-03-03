@@ -302,8 +302,7 @@ O backend nao foi iniciado. Execute:
 
 ```
 powershell
-cd inventory-backend
-.\mvnw.cmd spring-boot:run
+cd inventory-backend; .\mvnw.cmd spring-boot:run
 ```
 
 ### Erro: 404 em /api/*
